@@ -1,19 +1,25 @@
+// scripts/deployFractionalToken.js
 const hre = require("hardhat");
 
 async function main() {
-  const [deployer] = await hre.ethers.getSigners();
+  // Replace these values as needed
+  const NAME = "Fractional RWA Token";
+  const SYMBOL = "FRWA";
+  const INITIAL_SUPPLY = hre.ethers.utils.parseUnits("1000000", 18); // 1,000,000 tokens
+  const OWNER = "0x128276A302DbAfbF51B112D8043Eee92FFa89be1"; // Replace with deployer or intended owner
 
-  // Replace this with the deployed RWANFT address
-  const nftAddress = "0x5Ada6672E193a1E88226EE2948351d4d2a2ef410";
+  const FractionalToken = await hre.ethers.getContractFactory("FractionalToken");
+  const token = await FractionalToken.deploy(NAME, SYMBOL, INITIAL_SUPPLY, OWNER);
 
-  const Marketplace = await hre.ethers.getContractFactory("Marketplace");
-  const marketplace = await Marketplace.deploy(nftAddress);
-  await marketplace.deployed();
+  await token.deployed();
 
-  console.log("Marketplace deployed at:", marketplace.address);
+  console.log("FractionalToken deployed to:", token.address);
+  console.log("Owner:", OWNER);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
