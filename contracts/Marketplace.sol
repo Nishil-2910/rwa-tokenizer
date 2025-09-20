@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import "./RWANFT.sol";
 import "./FractionalToken.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract Marketplace is Ownable, ReentrancyGuard {
     struct Listing {
@@ -24,7 +24,7 @@ contract Marketplace is Ownable, ReentrancyGuard {
 
     RWANFT public nftContract;
 
-    constructor(address _nftContract) Ownable() {
+    constructor(address _nftContract) Ownable(msg.sender) {
         nftContract = RWANFT(_nftContract);
     }
 
