@@ -51,6 +51,18 @@ module.exports = {
     }
   },
 
+  // Add this function to your lendingController.js
+async setNFTValue(req, res) {
+  try {
+    const { tokenId, value } = req.body;
+    // You'll need to add this function to your lendingService.js too
+    const receipt = await lendingService.setNFTValue(tokenId, value);
+    res.json({ success: true, receipt });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+},
+
   async withdrawUSDC(req, res) {
     try {
       const { amount } = req.body;

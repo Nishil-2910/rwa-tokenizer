@@ -1,10 +1,4 @@
-const { ethers } = require("ethers");
-
-// --- Replace this with your actual deployed address ---
-const lendingContractAddress = "0x78c287b35C29A16Ea598D07F425E545df1771465";
-
-// --- Embed the ABI directly ---
-const RWALendingABI = [
+[
     {
       "inputs": [
         {
@@ -503,56 +497,3 @@ const RWALendingABI = [
       "type": "function"
     }
   ]
-
-// Connect to provider and signer
-const provider = new ethers.JsonRpcProvider("https://api.avax.network/ext/bc/C/rpc"); // or your RPC
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider); // Replace with your private key
-
-const lendingContract = new ethers.Contract(
-    lendingContractAddress,
-    RWALendingABI,
-    wallet
-);
-
-module.exports = {
-  async depositNFTForLoan(tokenId, loanAmount) {
-    const tx = await lendingContract.depositNFTForLoan(tokenId, loanAmount);
-    await tx.wait();
-    return tx;
-  },
-
-  async repayLoan(tokenId, repayAmount) {
-    const tx = await lendingContract.repayLoan(tokenId, repayAmount);
-    await tx.wait();
-    return tx;
-  },
-
-  // Add this to your lendingService.js exports
-async setNFTValue(tokenId, value) {
-  const tx = await lendingContract.setNFTValue(tokenId, value);
-  await tx.wait();
-  return tx;
-},
-
-  async liquidate(tokenId) {
-    const tx = await lendingContract.liquidate(tokenId);
-    await tx.wait();
-    return tx;
-  },
-
-  async viewLoan(tokenId) {
-    return await lendingContract.viewLoan(tokenId);
-  },
-
-  async fundContract(amount) {
-    const tx = await lendingContract.fundContract(amount);
-    await tx.wait();
-    return tx;
-  },
-
-  async withdrawUSDC(amount) {
-    const tx = await lendingContract.withdrawUSDC(amount);
-    await tx.wait();
-    return tx;
-  },
-};
